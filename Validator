@@ -1,0 +1,43 @@
+from tkinter import *
+
+def validator(card_number):
+  digits = [int(d) for d in str(card_number)]
+  odds_digits = digits[-1::-2]
+  evens_digits = digits[-2::-2]
+  checksum = 0
+  checksum += sum(odds_digits)
+  for d in evens_digits:
+    checksum += sum(digits_of(d * 2))
+  return checksum % 10
+
+def digits_of(n):
+  return [int(d) for d in str(n)]
+
+def checking():
+  card_number = card_number_entry.get()
+
+  if len(card_number) != 16:
+    result_label.config(text="Card number must have 16 digits")
+    return
+
+  if validator(card_number) == 0:
+    result_label.config(text="Card number is invalid")
+  else:
+    result_label.config(text="Card number is valid")
+
+window = Tk()
+window.title("Card number validation")
+
+card_number_label = Label(text="Card number:")
+card_number_label.pack()
+
+card_number_entry = Entry()
+card_number_entry.pack()
+
+check_button = Button(text="Validate", command=checking)
+check_button.pack()
+
+result_label = Label()
+result_label.pack()
+
+window.mainloop()
